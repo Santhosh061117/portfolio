@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#07090E" />
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" stroke="#00F0FF" stroke-opacity="0.3" stroke-width="1.5" />
+  
+  <!-- Silicon Chip Outer Pins -->
+  <line x1="14" y1="6" x2="14" y2="16" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="6" x2="24" y2="16" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="40" y1="6" x2="40" y2="16" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="6" x2="50" y2="16" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+
+  <line x1="14" y1="48" x2="14" y2="58" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="24" y1="48" x2="24" y2="58" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="40" y1="48" x2="40" y2="58" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="48" x2="50" y2="58" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+
+  <line x1="6" y1="18" x2="16" y2="18" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="6" y1="28" x2="16" y2="28" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="6" y1="36" x2="16" y2="36" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="6" y1="46" x2="16" y2="46" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+
+  <line x1="48" y1="18" x2="58" y2="18" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="48" y1="28" x2="58" y2="28" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="48" y1="36" x2="58" y2="36" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+  <line x1="48" y1="46" x2="58" y2="46" stroke="#00F0FF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Core Die -->
+  <rect x="16" y="16" width="32" height="32" rx="6" fill="#0D131F" stroke="#38BDF8" stroke-width="1.8"/>
+  
+  <!-- Silicon Monogram 'S' -->
+  <path d="M38 24 C38 21.8 35.8 20 32 20 C27.5 20 25 22.5 25 25.5 C25 31 39 29.5 39 36 C39 40 35.5 42 32 42 C27 42 24.5 39.5 24.5 37" 
+        stroke="#00F0FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <circle cx="21" cy="21" r="1.5" fill="#00F0FF" />
+  <circle cx="43" cy="43" r="1.5" fill="#38BDF8" />
+</svg>
