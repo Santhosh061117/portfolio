@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Terminal as TerminalIcon, X, Maximize2, Minimize2, Cpu, CornerDownLeft } from 'lucide-react';
+import { Terminal as TerminalIcon, X, Cpu, CornerDownLeft, Sun, Moon } from 'lucide-react';
 import { personalInfo, signalStack, mainProject } from '../data/portfolio';
+import { playClickSound, playSwitchSound, isAudioEnabled, setAudioEnabled } from '../utils/sound';
 
-export default function EasterEggTerminal({ isOpen, onClose }) {
+export default function EasterEggTerminal({ isOpen, onClose, theme = 'dark', onToggleTheme }) {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState([
     { type: 'sys', text: 'santhosh@silicon-lab:~$ sysinfo --init' },
@@ -33,6 +34,7 @@ export default function EasterEggTerminal({ isOpen, onClose }) {
 
   const handleCommand = (e) => {
     if (e.key === 'Enter') {
+      playClickSound();
       const cmd = inputVal.trim().toLowerCase();
       if (!cmd) return;
 
@@ -45,13 +47,33 @@ export default function EasterEggTerminal({ isOpen, onClose }) {
           newHistory.push({
             type: 'output',
             text: `Available system commands:
-  • status    - Display academic status, CGPA & degree
-  • stack     - Print the 9-layer Silicon-to-Application stack
-  • project   - Inspect LoRa Bus Shelter case study specs
-  • skills    - Display primary programming & simulation tools
+  • status    - Display academic standing, CGPA & institution
+  • stack     - Print the 9-layer Silicon-to-Application continuum
+  • project   - Inspect LoRa Smart Bus Shelter architecture
+  • skills    - Display primary programming & TCAD simulation tools
+  • theme     - Toggle between Dark and Light mode
+  • audio     - Toggle sound feedback (on/off)
   • contact   - View verified direct communication channels
   • clear     - Clear terminal buffer
   • exit      - Close this terminal panel`,
+          });
+          break;
+
+        case 'theme':
+          if (onToggleTheme) onToggleTheme();
+          playSwitchSound();
+          newHistory.push({
+            type: 'highlight',
+            text: `>> THEME SWITCHED: Current theme is now ${theme === 'dark' ? 'LIGHT' : 'DARK'}`,
+          });
+          break;
+
+        case 'audio':
+          const currentAudio = isAudioEnabled();
+          setAudioEnabled(!currentAudio);
+          newHistory.push({
+            type: 'highlight',
+            text: `>> AUDIO FEEDBACK: ${!currentAudio ? 'ENABLED' : 'MUTED'}`,
           });
           break;
 
@@ -71,7 +93,7 @@ export default function EasterEggTerminal({ isOpen, onClose }) {
         case 'stack':
           newHistory.push({
             type: 'output',
-            text: `SIGNAL FLOW STACK:
+            text: `SIGNAL FLOW CONTINUUM:
 ` + signalStack.map((s) => `  [L${s.layer}] ${s.title.padEnd(16)} -> ${s.domain} (${s.tools})`).join('\n'),
           });
           break;
@@ -156,11 +178,11 @@ export default function EasterEggTerminal({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
       <div 
-        className="w-full max-w-2xl bg-[#090d16] border border-cyan-500/40 rounded-xl shadow-[0_0_50px_rgba(0,240,255,0.15)] overflow-hidden flex flex-col max-h-[85vh] transition-all"
+        className="w-full max-w-2xl bg-[#090d16] border border-cyan-500/40 rounded-2xl shadow-[0_0_60px_rgba(0,240,255,0.2)] overflow-hidden flex flex-col max-h-[85vh] transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Terminal Title Bar */}
-        <div className="bg-[#0f172a] px-4 py-2.5 border-b border-cyan-500/20 flex items-center justify-between select-none">
+        <div className="bg-[#0f172a] px-4 py-3 border-b border-cyan-500/20 flex items-center justify-between select-none">
           <div className="flex items-center space-x-2">
             <div className="flex space-x-1.5">
               <button 
@@ -174,7 +196,7 @@ export default function EasterEggTerminal({ isOpen, onClose }) {
             <div className="h-3 w-[1px] bg-slate-700 mx-2" />
             <div className="flex items-center text-xs font-mono text-cyan-300">
               <Cpu className="w-3.5 h-3.5 mr-1.5 text-cyan-400" />
-              <span>santhosh@silicon-lab: ~ (v1.0.4)</span>
+              <span>santhosh@silicon-lab: ~ (v2.0)</span>
             </div>
           </div>
           <div className="flex items-center space-x-3 text-xs font-mono text-slate-400">
@@ -188,7 +210,7 @@ export default function EasterEggTerminal({ isOpen, onClose }) {
         </div>
 
         {/* Terminal Body */}
-        <div className="p-4 overflow-y-auto flex-1 font-mono text-xs sm:text-sm text-slate-300 space-y-1.5 bg-circuit-grid-dense">
+        <div className="p-4 sm:p-5 overflow-y-auto flex-1 font-mono text-xs sm:text-sm text-slate-300 space-y-1.5 bg-circuit-grid-dense bg-[#07090e]">
           {history.map((item, idx) => (
             <div key={idx} className="whitespace-pre-wrap leading-relaxed">
               {item.type === 'prompt' && (
@@ -237,10 +259,10 @@ export default function EasterEggTerminal({ isOpen, onClose }) {
         </div>
 
         {/* Terminal Footer Quick Bar */}
-        <div className="bg-[#0b101d] px-4 py-2 border-t border-cyan-500/20 text-[11px] font-mono text-slate-400 flex flex-wrap gap-2 items-center justify-between">
+        <div className="bg-[#0b101d] px-4 py-2.5 border-t border-cyan-500/20 text-[11px] font-mono text-slate-400 flex flex-wrap gap-2 items-center justify-between">
           <div className="flex items-center space-x-1.5 overflow-x-auto py-0.5">
             <span className="text-slate-500">Quick:</span>
-            {['status', 'stack', 'project', 'skills', 'contact', 'clear'].map((cmd) => (
+            {['status', 'stack', 'project', 'skills', 'theme', 'contact', 'clear'].map((cmd) => (
               <button
                 key={cmd}
                 onClick={() => {

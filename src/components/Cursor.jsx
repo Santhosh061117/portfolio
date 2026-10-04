@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-export default function Cursor() {
+export default function Cursor({ theme = 'dark' }) {
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [target, setTarget] = useState({ x: -100, y: -100 });
-  const [cursorType, setCursorType] = useState('default'); // 'default', 'hover', 'project', 'text'
+  const [cursorType, setCursorType] = useState('default');
   const [cursorText, setCursorText] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(true);
 
   const requestRef = useRef(null);
+  const isDark = theme === 'dark';
 
   useEffect(() => {
-    // Only enable custom cursor if fine pointer is available (desktop mouse)
     const hasPointer = window.matchMedia('(pointer: fine)').matches;
     if (!hasPointer) {
       setIsTouchDevice(true);
@@ -23,7 +23,6 @@ export default function Cursor() {
       setTarget({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
 
-      // Check hovered element
       const targetEl = e.target;
       if (!targetEl) return;
 
@@ -53,7 +52,6 @@ export default function Cursor() {
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
-    // Smooth lerp loop
     const animate = () => {
       setPos((prev) => ({
         x: prev.x + (target.x - prev.x) * 0.22,
@@ -87,10 +85,12 @@ export default function Cursor() {
         <div
           className={`rounded-full transition-all duration-200 ${
             cursorType === 'hover'
-              ? 'w-2 h-2 bg-cyan-300'
+              ? isDark ? 'w-2 h-2 bg-cyan-300' : 'w-2 h-2 bg-sky-600'
               : cursorType === 'project'
               ? 'opacity-0'
-              : 'w-1.5 h-1.5 bg-cyan-400 shadow-[0_0_8px_#00f0ff]'
+              : isDark
+              ? 'w-1.5 h-1.5 bg-cyan-400 shadow-[0_0_8px_#00f0ff]'
+              : 'w-1.5 h-1.5 bg-sky-600 shadow-[0_0_8px_rgba(2,132,199,0.6)]'
           }`}
         />
       </div>
@@ -104,19 +104,23 @@ export default function Cursor() {
         }}
       >
         {cursorType === 'project' ? (
-          <div className="bg-cyan-500/90 backdrop-blur-md text-black font-mono text-[10px] font-bold px-3 py-1.5 rounded-full border border-cyan-300 shadow-[0_0_20px_rgba(0,240,255,0.4)] whitespace-nowrap tracking-wider animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-cyan-500 text-black font-mono text-[10px] font-bold px-3 py-1.5 rounded-full border border-cyan-300 shadow-xl whitespace-nowrap tracking-wider animate-in fade-in zoom-in-95 duration-150">
             {cursorText}
           </div>
         ) : cursorType === 'label' ? (
-          <div className="bg-slate-900/90 backdrop-blur-md text-cyan-300 font-mono text-[9px] px-2.5 py-1 rounded border border-cyan-500/30 whitespace-nowrap shadow-lg">
+          <div className="bg-slate-900/90 text-cyan-300 font-mono text-[9px] px-2.5 py-1 rounded border border-cyan-500/30 whitespace-nowrap shadow-lg">
             {cursorText}
           </div>
         ) : (
           <div
             className={`rounded-full border transition-all duration-300 ease-out ${
               cursorType === 'hover'
-                ? 'w-10 h-10 border-cyan-400/80 bg-cyan-400/10 scale-100'
-                : 'w-7 h-7 border-cyan-500/25 scale-75'
+                ? isDark
+                  ? 'w-10 h-10 border-cyan-400/80 bg-cyan-400/10 scale-100'
+                  : 'w-10 h-10 border-sky-600/80 bg-sky-500/10 scale-100'
+                : isDark
+                ? 'w-7 h-7 border-cyan-500/30 scale-75'
+                : 'w-7 h-7 border-sky-600/40 scale-75'
             }`}
           />
         )}
